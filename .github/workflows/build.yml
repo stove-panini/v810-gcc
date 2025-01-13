@@ -25,8 +25,8 @@ jobs:
       - name: Build Linux
         if: startsWith(matrix.os, 'ubuntu')
         run: |
-          apt update
-          apt install -y gperf
+          sudo apt update
+          sudo apt install -y gperf
           ./build_release.sh
 
       - name: Build MacOS
