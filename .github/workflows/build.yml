@@ -1,0 +1,58 @@
+name: Build
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, macos15, windows2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout patches & tarballs
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            archive
+            patch
+            build_release.sh
+
+      - name: Build Linux
+        if: startsWith(matrix.os, 'ubuntu')
+        run: ./build_release.sh
+
+      - name: Build MacOS
+        if: startsWith(matrix.os, 'macos')
+        run: ./build_release.sh
+
+      - name: Build Windows
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          C:\msys64\msys2_shell.cmd -mingw64 -no-start -defterm -c "pacman -S --noconfirm --needed git base-devel autoconf gperf"
+          C:\msys64\msys2_shell.cmd -mingw64 -no-start -defterm -where %CD% -c "./build_release.sh"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${GITHUB_REF_NAME}-${{ matrix.os }}
+          path: "*.zip"
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ${GITHUB_REF_NAME}-*.zip
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "*.zip"
+          tag: latest
