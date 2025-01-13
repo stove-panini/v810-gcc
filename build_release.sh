@@ -47,7 +47,7 @@ case $OS in
     Darwin)
       BUILD="--build=x86_64-apple-darwin20"
       ;;
-    Windows_NT)
+    Windows_NT|MINGW64_NT*)
       BUILD=""
       export CFLAGS="-O2 -static"
       export CXXFLAGS="-O2 -static"
@@ -239,5 +239,4 @@ cd build/gcc
   --enable-languages=c,c++
 make --jobs="$(nproc)" all
 make install-strip
-cd -
-rm -f "${DSTDIR}/bin/${TARGET}-gcc-"{4.9.4,ar,nm,ranlib}
+cd rm -f "${DSTDIR}/bin/${TARGET}-gcc-"{4.9.4,ar,nm,ranlib}
