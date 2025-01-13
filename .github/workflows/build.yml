@@ -2,9 +2,7 @@ name: Build
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
+    branches: [master]
 
 jobs:
   build:
