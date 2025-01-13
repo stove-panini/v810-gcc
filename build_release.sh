@@ -42,13 +42,15 @@ export LDFLAGS=""
 
 case $OS in
     Linux)
+      CPUS=$(nproc)
       BUILD="--build=x86_64-linux-gnu"
       ;;
     Darwin)
+      CPUS=$(sysctl -n hw.logicalcpu)
       BUILD="--build=x86_64-apple-darwin20"
-      alias nproc="sysctl -n hw.logicalcpu"
       ;;
     Windows_NT|MINGW64_NT*)
+      CPUS=$(nproc)
       BUILD=""
       export CFLAGS="-O2 -static"
       export CXXFLAGS="-O2 -static"
@@ -154,7 +156,7 @@ cd build/binutils
     --disable-shared \
     --disable-multilib \
     --disable-lto
-make --jobs="$(nproc)" all
+make --jobs="$CPUS" all
 make install-strip
 cd -
 rm -f "$DSTDIR/bin/$TARGET-ld.bfd" "$DSTDIR/$TARGET/bin/ld.bfd"
@@ -184,7 +186,7 @@ cd build/gcc
   --disable-lto \
   --enable-frame-pointer \
   --enable-languages=c
-make --jobs="$(nproc)" all
+make --jobs="$CPUS" all
 make install-strip
 cd -
 rm -f "$DSTDIR/bin/$TARGET-gcc-"{4.9.4,ar,nm,ranlib}
@@ -211,7 +213,7 @@ cd build/newlib
   --enable-newlib-reent-small \
   --enable-lite-exit \
   --enable-newlib-hw-fp
-make --jobs="$(nproc)" all
+make --jobs="$CPUS" all
 make install
 cd -
 
@@ -238,6 +240,6 @@ cd build/gcc
   --disable-lto \
   --enable-frame-pointer \
   --enable-languages=c,c++
-make --jobs="$(nproc)" all
+make --jobs="$CPUS" all
 make install-strip
 cd rm -f "${DSTDIR}/bin/${TARGET}-gcc-"{4.9.4,ar,nm,ranlib}
