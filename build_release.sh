@@ -241,11 +241,3 @@ make --jobs="$(nproc)" all
 make install-strip
 cd -
 rm -f "${DSTDIR}/bin/${TARGET}-gcc-"{4.9.4,ar,nm,ranlib}
-
-case "$OS" in
-    Linux)      zipname=Linux ;;
-    Darwin)     zipname=MacOS ;;
-    Windows_NT) zipname=Windows ;;
-esac
-
-zip -r "v810-gcc-$zipname-x86_64.zip" "${TARGET}-gcc"
