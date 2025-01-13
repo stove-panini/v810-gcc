@@ -29,9 +29,8 @@ jobs:
       - name: Build MacOS
         if: startsWith(matrix.os, 'macos')
         run: |
-          brew install gcc gperf texinfo autoconf bash
-          which bash
-          which gcc
+          brew install gperf texinfo autoconf bash
+          sudo ln -s /opt/homebrew/bin/gcc /usr/local/bin/
           bash build_release.sh
 
       - name: Build Windows
