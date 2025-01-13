@@ -46,6 +46,7 @@ case $OS in
       ;;
     Darwin)
       BUILD="--build=x86_64-apple-darwin20"
+      alias nproc="sysctl -n hw.logicalcpu"
       ;;
     Windows_NT|MINGW64_NT*)
       BUILD=""
