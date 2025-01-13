@@ -248,4 +248,4 @@ case "$OS" in
     Windows_NT) zipname=Windows ;;
 esac
 
-zip "v810-gcc-$zipname-x86_64.zip" "${TARGET}-gcc"
+zip -r "v810-gcc-$zipname-x86_64.zip" "${TARGET}-gcc"
