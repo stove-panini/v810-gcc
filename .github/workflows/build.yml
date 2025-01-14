@@ -39,30 +39,22 @@ jobs:
       - name: Build Linux
         if: startsWith(matrix.os, 'ubuntu')
         run: |
-          sudo apt update
-          sudo apt install -y gperf
-          ./build_release.sh
+          echo hello >hello.txt
+          zip artifact-linux.zip hello.txt
 
       - name: Build MacOS
         if: startsWith(matrix.os, 'macos')
         continue-on-error: true
         run: |
-          sudo ln -s /opt/homebrew/bin/gcc-13 /usr/local/bin/gcc
-          sudo ln -s /opt/homebrew/bin/gcc-ar-13 /usr/local/bin/gcc-ar
-          sudo ln -s /opt/homebrew/bin/gcc-nm-13 /usr/local/bin/gcc-nm
-          sudo ln -s /opt/homebrew/bin/gcc-ranlib-13 /usr/local/bin/gcc-ranlib
-          sudo ln -s /opt/homebrew/bin/g++-13 /usr/local/bin/g++
-          hash -r
-
-          brew install gperf texinfo autoconf bash
-          bash build_release.sh
+          echo hello >hello.txt
+          zip artifact-mac.zip hello.txt
 
       - name: Build Windows
         if: startsWith(matrix.os, 'windows')
         continue-on-error: true
         run: |
-          C:\msys64\msys2_shell.cmd -mingw64 -no-start -defterm -c "pacman -S --noconfirm --needed git base-devel gcc autoconf gperf zip"
-          C:\msys64\msys2_shell.cmd -mingw64 -no-start -defterm -where %CD% -c "./build_release.sh"
+          C:\msys64\msys2_shell.cmd -mingw64 -no-start -defterm -c "pacman -S --noconfirm --needed zip"
+          C:\msys64\msys2_shell.cmd -mingw64 -no-start -defterm -where %CD% -c "echo hello >hello.txt; zip artifact-win.zip hello.txt"
 
       - name: Upload artifact
         if: ${{ github.ref_name == 'master' }}
