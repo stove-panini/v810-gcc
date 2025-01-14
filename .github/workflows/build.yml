@@ -30,9 +30,7 @@ jobs:
       - name: Build MacOS
         if: startsWith(matrix.os, 'macos')
         run: |
-          echo $PATH
-          export PATH=/opt/homebrew/bin:$PATH
-
+          ls -l /opt/homebrew/bin
           [[ $(type gcc) == /opt/homebrew/bin/gcc ]] || exit 1
 
           brew install gperf texinfo autoconf bash
