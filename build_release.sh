@@ -242,4 +242,5 @@ cd build/gcc
   --enable-languages=c,c++
 make --jobs="$CPUS" all
 make install-strip
-cd rm -f "${DSTDIR}/bin/${TARGET}-gcc-"{4.9.4,ar,nm,ranlib}
+cd -
+rm -f "${DSTDIR}/bin/${TARGET}-gcc-"{4.9.4,ar,nm,ranlib}
