@@ -30,8 +30,8 @@ jobs:
       - name: Build MacOS
         if: startsWith(matrix.os, 'macos')
         run: |
-          ls -l /opt/homebrew/bin
-          [[ $(type gcc) == /opt/homebrew/bin/gcc ]] || exit 1
+          sudo ln -s /opt/homebrew/bin/gcc-13 /usr/local/bin/gcc
+          sudo ln -s /opt/homebrew/bin/g++-13 /usr/local/bin/g++
 
           brew install gperf texinfo autoconf bash
           bash build_release.sh
